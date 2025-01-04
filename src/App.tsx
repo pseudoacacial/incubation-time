@@ -2,11 +2,13 @@ import { useState } from "react"
 import "./App.css"
 
 function App() {
-  const getCurrentDate = function () {
-    const today = new Date()
-    const year = today.getFullYear()
-    const month = String(today.getMonth() + 1).padStart(2, "0") // Months are zero-based
-    const day = String(today.getDate()).padStart(2, "0")
+  const getStartDate = function (yesterday: boolean = false) {
+    const date = yesterday
+      ? new Date(Date.now() - 24 * 60 * 60 * 1000)
+      : new Date()
+    const year = date.getFullYear()
+    const month = String(date.getMonth() + 1).padStart(2, "0") // Months are zero-based
+    const day = String(date.getDate()).padStart(2, "0")
     return `${year}-${month}-${day}T00:00`
   }
 
@@ -17,8 +19,8 @@ function App() {
     return `${hours} hours, ${minutes} minutes`
   }
 
-  const [start, setStart] = useState(getCurrentDate())
-  const [end, setEnd] = useState(getCurrentDate())
+  const [start, setStart] = useState(getStartDate(true))
+  const [end, setEnd] = useState(getStartDate())
 
   const handleChangeStart = function (e: React.ChangeEvent<HTMLInputElement>) {
     setStart(e.target.value)
